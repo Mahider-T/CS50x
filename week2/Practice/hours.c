@@ -1,28 +1,48 @@
-#include <stdio.h>
 #include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
 
+float calc_hours(int hours[], int weeks, char output);
 
-int main(void){
-    int numberOfWeeks = get_int("Number of weeks taking CS50: ");
-    float hoursEachWeek[numberOfWeeks];
-    float sum = 0;
-    float average;
-    char preference;
-    for( int i = 0; i <numberOfWeeks ; i++){
-        hoursEachWeek[i] = get_float("Week %i HW Hours: ", i);
-        sum += hoursEachWeek[i];
-    }
-    average = sum/(float)numberOfWeeks;
-    
-    preference = get_char("Enter T for total hours and A fir average hours per week: ");
-    switch (preference)
+int main(void)
+{
+    int weeks = get_int("Number of weeks taking CS50: ");
+    int hours[weeks];
+
+    for (int i = 0; i < weeks; i++)
     {
-    case 'T': case 't':
-        printf("%f hours \n", sum);
-        break;
-    case 'A': case 'a':  
-        printf("%f hours\n", average);
-    default:
-        break;
+        hours[i] = get_int("Week %i HW Hours: ", i);
     }
+
+    char output;
+    do
+    {
+        output = toupper(get_char("Enter T for total hours, A for average hours per week: "));
+    }
+    while (output != 'T' && output != 'A');
+
+    printf("%.1f hours\n", calc_hours(hours, weeks, output));
+}
+
+// TODO: complete the calc_hours function
+float calc_hours(int hours[], int weeks, char output)
+{
+    float sum = 0;
+    float average = 0;
+    for(int i = 0; i < weeks; i++){
+        sum += hours[i];
+    }
+    average = sum/weeks;
+
+    switch (output){
+        case 'T':
+            return sum;
+            break;
+        case 'A':
+            return average;
+            break;
+        default:
+            printf("Wrong entry\n");
+    }
+
 }
