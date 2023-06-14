@@ -33,18 +33,18 @@ int main(int argc, string argv[])
         }
         keyArray[i] = toupper(key[i]);
     }
-    string plainText = get_string("Plain text:");
+    string plainText = get_string("plain text: ");
     // printf("In main: %lu", strlen(plainText));
     char initialText[strlen(plainText)];
-    for(int i = 0; i < strlen(plainText); i++){
-        initialText[i] = toupper(plainText[i]);
-    }
+    // for(int i = 0; i < strlen(plainText); i++){
+    //     initialText[i] = toupper(plainText[i]);
+    // }
     // for(int i = 0; i < strlen(plainText); i++){
     //     printf("%c", initialText[i]);
     // }
 
 
-    transformer(alphabetArray, keyArray, initialText);
+    transformer(alphabetArray, keyArray, plainText );
 
 }
 
@@ -56,26 +56,39 @@ void transformer(char arrayNormal[],char arrayKey[], string plainText){
     // printf("%s\n", iDontKnow);
     // printf("%c",plainText[0]);
     // int lengthOfString = array_length(plainText);
-    // int lengthOfString = strlen(plainText);
+    int lengthOfString = strlen(plainText);
     // int lengthOfString = sizeof(plainText)/sizeOf(plainText[0]);
 
-    int count = 0;
-    for(int i = 0; plainText[i] != '\0'; i++){
-        count++;
+    // int count = 0;
+    // for(int i = 0; plainText[i] != '\0'; i++){
+    //     count++;
 
-    }
-    printf("The length of the string is %i\n",count);
+    // }
+    // printf("The length of the string is %i\n",lengthOfString);
     int positionOfChar;
-    for(int i = 0; i < count; i++){
+    printf("ciphertext: ");
+    for(int i = 0; i < strlen(plainText); i++){
         positionOfChar = positionOfCharacter(arrayNormal, plainText[i]);
-        printf("%c",arrayKey[positionOfChar]);
+        if(isalpha(plainText[i])){
+            if(isupper(plainText[i])){
+            printf("%c",arrayKey[positionOfChar]);
+            }
+            else{
+                printf("%c",tolower(arrayKey[positionOfChar]));
+            }
+        }
+        else{
+            printf("%c", plainText[i]);
+        }
+
+
     }
     printf("\n");
 }
 
 int positionOfCharacter(char array[], char targetCharacter){
     for(int i = 0; i < 26; i++){
-        if(array[i] == targetCharacter){
+        if(array[i] == toupper(targetCharacter)){
             return i;
         }
     }
