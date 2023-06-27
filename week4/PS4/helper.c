@@ -58,6 +58,51 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+     //There is a maximum of 6 entries to average;
+    //But there are times where not all the 6 entries exist(edge cases)
+    //In these cases just make entry 0 but do not increment the total number
+    //of entries, because it affects the average
+
+    RGBTRIPLE newPixels[height][width];
+
+    for ( int i = 0; i < height; i++){
+        for ( int j = 0; j < width; j++){
+            // RGBTRIPLE neighbors[9]; //declared in this scope because
+                                    //neighbor for each pixel is different
+
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+
+            float count = 0;
+
+            for(int k = -1; k <= 1; k++){
+                for( int l = -1; l <= 1; l++ ){
+                    if((i+k) >= 0 && (i+k) < height && (j+l) >= 0 && (j+l) < width){
+                        // neighbors[count] = image[i][j];
+                        // count++;
+                        red += image[i+k][j+l].rgbtRed;
+                        green += image[i+k][j+l].rgbtGreen;
+                        blue += image[i+k][j+l].rgbtBlue;
+                        count++;
+                    }
+                }
+            }
+
+            newPixels[i][j].rgbtRed = round(red/count);
+            newPixels[i][j].rgbtGreen = round(green/count);
+            newPixels[i][j].rgbtBlue = round(blue/count);
+            // printf("%i\n",count);
+        }
+    }
+
+    for ( int i = 0; i < height; i++){
+        for ( int j = 0; j < width; j++){
+            image[i][j].rgbtRed = newPixels[i][j].rgbtRed;
+            image[i][j].rgbtGreen = newPixels[i][j].rgbtGreen;
+            image[i][j].rgbtBlue = newPixels[i][j].rgbtBlue;
+        }
+    }
     return;
 }
 
